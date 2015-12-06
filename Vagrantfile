@@ -8,6 +8,13 @@ $script = <<SCRIPT
 # Set timezone
 echo "Asia/Kuala_Lumpur" | sudo tee /etc/timezone
 
+export DEBIAN_FRONTEND=noninteractive
+
+export LANGUAGE=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+locale-gen en_US.UTF-8
+sudo dpkg-reconfigure locales
 
 # APT-GET
 sudo apt-get update
@@ -35,6 +42,12 @@ export PATH=/home/vagrant/anaconda/bin:$PATH
 END
 #rm $anaconda
 
+# Download all NLTK data
+# sudo /home/vagrant/anaconda/bin/python -m nltk.downloader -d /usr/local/share/nltk_data all
+
+sudo apt-get -y install sqlite3
+
+
 # JAVA
 # apt-get -y install openjdk-7-jdk
 
@@ -42,9 +55,9 @@ END
 /home/vagrant/anaconda/bin/pip install seaborn
 
 # Start ipython notebook
-IPYTHON_CMD=su vagrant -c 'cd /home/vagrant && /home/vagrant/anaconda/bin/ipython notebook --ip=* --no-browser'
-sudo sed -i "1i $IPYTHON_CMD" /etc/rc.local
-sudo $IPYTHON_CMD
+cp /home/vagrant/thecads/ipython_notebook_config.py /home/vagrant/.ipython/profile_default
+sudo cp /home/vagrant/thecads/ipython-notebook.conf /etc/init
+sudo service ipython-notebook start
 
 # R and RStudio Server
 echo "deb https://cran.rstudio.com/bin/linux/ubuntu trusty/" | sudo tee /etc/apt/sources.list.d/r-project.list

@@ -67,6 +67,9 @@ sudo apt-get -y install r-base r-base-dev
 sudo Rscript /home/vagrant/thecads/install_r_packages.R
 sudo dpkg -i /home/vagrant/thecads/rstudio-server-0.99.489-amd64.deb
 
+# install rpython magic
+/home/vagrant/anaconda/bin/pip install rpy2
+
 SCRIPT
 
 Vagrant.configure(2) do |config|

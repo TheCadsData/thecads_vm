@@ -10,6 +10,7 @@ packages <- c(
     "memoise",
     "parallel",
     "png",
+    "readr",
     "rvest",
     "sqldf",
     "stringr",

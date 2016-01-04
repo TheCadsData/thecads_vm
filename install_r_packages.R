@@ -1,4 +1,5 @@
 packages <- c(
+    "caTools",
     "dplyr",
     "ggplot2",
     "hash",
@@ -8,6 +9,7 @@ packages <- c(
     "magrittr",
     "memoise",
     "parallel",
+    "png",
     "rvest",
     "sqldf",
     "stringr",

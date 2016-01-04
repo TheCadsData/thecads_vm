@@ -1,9 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-ipython_guest = 8888
-ipython_host = 8888
-
 $script = <<SCRIPT
 # Set timezone
 echo "Asia/Kuala_Lumpur" | sudo tee /etc/timezone
@@ -16,18 +13,21 @@ export LC_ALL=en_US.UTF-8
 locale-gen en_US.UTF-8
 sudo dpkg-reconfigure locales
 
+# R and RStudio Server keys
+echo "deb https://cran.rstudio.com/bin/linux/ubuntu trusty/" | sudo tee /etc/apt/sources.list.d/r-project.list
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+
 # APT-GET
 sudo apt-get update
 #sudo apt-get upgrade
 
-sudo apt-get -y install libssl-dev build-essential libffi-dev libzmq-dev
-sudo apt-get -y install libcurl4-gnutls-dev
-sudo apt-get -y install libxml2-dev
-sudo apt-get -y install python-dev
-sudo apt-get -y install git-core
+sudo apt-get -y install libssl-dev build-essential libffi-dev libzmq-dev libcurl4-gnutls-dev \
+libxml2-dev python-dev git-core python-pip sqlite3 r-base r-base-dev
 
-# PIP
-sudo apt-get -y install python-pip
+sudo apt-get -y autoremove
+
+# JAVA
+# apt-get -y install openjdk-7-jdk
 
 # ANACONDA
 anaconda=/home/vagrant/thecads/Anaconda2-2.4.0-Linux-x86_64.sh
@@ -37,39 +37,32 @@ anaconda=/home/vagrant/thecads/Anaconda2-2.4.0-Linux-x86_64.sh
 #fi
 chmod +x $anaconda
 $anaconda -b -p /home/vagrant/anaconda
+sudo chown -R vagrant:vagrant /home/vagrant/anaconda
 cat >> /home/vagrant/.bashrc << END
 export PATH=/home/vagrant/anaconda/bin:$PATH
 END
-#rm $anaconda
+source /home/vagrant/.bashrc
+yes | /home/vagrant/anaconda/bin/conda update conda
 
 # Download all NLTK data
 # sudo /home/vagrant/anaconda/bin/python -m nltk.downloader -d /usr/local/share/nltk_data all
-
-sudo apt-get -y install sqlite3
-
-
-# JAVA
-# apt-get -y install openjdk-7-jdk
 
 # Install findspark & seaborn
 /home/vagrant/anaconda/bin/pip install seaborn
 
 # Start ipython notebook
+/home/vagrant/anaconda/bin/ipython locate
 cp /home/vagrant/thecads/ipython_notebook_config.py /home/vagrant/.ipython/profile_default
 sudo cp /home/vagrant/thecads/ipython-notebook.conf /etc/init
 sudo service ipython-notebook start
 
-# R and RStudio Server
-echo "deb https://cran.rstudio.com/bin/linux/ubuntu trusty/" | sudo tee /etc/apt/sources.list.d/r-project.list
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
-sudo apt-get update
-sudo apt-get -y install r-base r-base-dev
 sudo Rscript /home/vagrant/thecads/install_r_packages.R
-sudo dpkg -i /home/vagrant/thecads/rstudio-server-0.99.489-amd64.deb
+sudo dpkg -i /home/vagrant/thecads/rstudio-server-0.99.491-amd64.deb
 
 # install rpython magic
 /home/vagrant/anaconda/bin/pip install rpy2
 
+sudo apt-get -y autoremove
 SCRIPT
 
 Vagrant.configure(2) do |config|

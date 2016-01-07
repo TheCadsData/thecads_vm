@@ -8,6 +8,7 @@ packages <- c(
     "lubridate",
     "magrittr",
     "memoise",
+    "nycflights13",
     "parallel",
     "png",
     "readr",

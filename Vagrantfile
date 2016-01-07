@@ -37,12 +37,12 @@ anaconda=/home/vagrant/thecads/Anaconda2-2.4.0-Linux-x86_64.sh
 #fi
 chmod +x $anaconda
 $anaconda -b -p /home/vagrant/anaconda
-sudo chown -R vagrant:vagrant /home/vagrant/anaconda
 cat >> /home/vagrant/.bashrc << END
 export PATH=/home/vagrant/anaconda/bin:$PATH
 END
 source /home/vagrant/.bashrc
 yes | /home/vagrant/anaconda/bin/conda update conda
+chown -R vagrant:vagrant /home/vagrant/anaconda
 
 # Download all NLTK data
 # sudo /home/vagrant/anaconda/bin/python -m nltk.downloader -d /usr/local/share/nltk_data all
@@ -51,8 +51,8 @@ yes | /home/vagrant/anaconda/bin/conda update conda
 /home/vagrant/anaconda/bin/pip install seaborn
 
 # Start ipython notebook
-/home/vagrant/anaconda/bin/ipython locate
-cp /home/vagrant/thecads/ipython_notebook_config.py /home/vagrant/.ipython/profile_default
+su vagrant -c '/home/vagrant/anaconda/bin/ipython locate'
+su vagrant -c 'cp /home/vagrant/thecads/ipython_notebook_config.py /home/vagrant/.ipython/profile_default'
 sudo cp /home/vagrant/thecads/ipython-notebook.conf /etc/init
 sudo service ipython-notebook start
 
@@ -63,6 +63,8 @@ sudo dpkg -i /home/vagrant/thecads/rstudio-server-0.99.491-amd64.deb
 /home/vagrant/anaconda/bin/pip install rpy2
 
 sudo apt-get -y autoremove
+
+sudo usermod -aG vboxsf vagrant
 SCRIPT
 
 Vagrant.configure(2) do |config|
@@ -73,7 +75,7 @@ Vagrant.configure(2) do |config|
   # rstudio server
   config.vm.network "forwarded_port", guest: 8787, host: 8787, auto_correct: true
 
-  config.vm.network "private_network", ip: "192.168.33.10"
+  # config.vm.network "private_network", ip: "192.168.33.10"
 
   config.vm.provider :virtualbox do |vb|
     vb.memory = 2048

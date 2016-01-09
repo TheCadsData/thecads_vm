@@ -51,10 +51,16 @@ chown -R vagrant:vagrant /home/vagrant/anaconda
 /home/vagrant/anaconda/bin/pip install seaborn
 
 # Start ipython notebook
-su vagrant -c '/home/vagrant/anaconda/bin/ipython locate'
-su vagrant -c 'cp /home/vagrant/thecads/ipython_notebook_config.py /home/vagrant/.ipython/profile_default'
-sudo cp /home/vagrant/thecads/ipython-notebook.conf /etc/init
-sudo service ipython-notebook start
+su vagrant -c '/home/vagrant/anaconda/bin/jupyter notebook --generate-config'
+cat >> /home/vagrant/.jupyter/jupyter_notebook_config.py << END
+c.NotebookApp.ip = '*'
+#c.NotebookApp.port = 8888
+c.NotebookApp.open_browser = False
+END
+
+#su vagrant -c 'cp /home/vagrant/thecads/ipython_notebook_config.py /home/vagrant/.ipython/profile_default'
+sudo cp /home/vagrant/thecads/jupyter-notebook.conf /etc/init
+sudo service jupyter-notebook start
 
 sudo Rscript /home/vagrant/thecads/install_r_packages.R
 sudo dpkg -i /home/vagrant/thecads/rstudio-server-0.99.491-amd64.deb

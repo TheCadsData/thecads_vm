@@ -58,9 +58,10 @@ c.NotebookApp.ip = '*'
 c.NotebookApp.open_browser = False
 END
 
-#su vagrant -c 'cp /home/vagrant/thecads/ipython_notebook_config.py /home/vagrant/.ipython/profile_default'
-sudo cp /home/vagrant/thecads/jupyter-notebook.conf /etc/init
-sudo service jupyter-notebook start
+su vagrant -c 'ln -s /media /home/vagrant/media'
+
+#sudo cp /home/vagrant/thecads/jupyter-notebook.conf /etc/init
+#sudo service jupyter-notebook start
 
 sudo Rscript /home/vagrant/thecads/install_r_packages.R
 sudo dpkg -i /home/vagrant/thecads/rstudio-server-0.99.491-amd64.deb
@@ -71,6 +72,7 @@ sudo dpkg -i /home/vagrant/thecads/rstudio-server-0.99.491-amd64.deb
 sudo apt-get -y autoremove
 
 sudo usermod -aG vboxsf vagrant
+
 SCRIPT
 
 Vagrant.configure(2) do |config|

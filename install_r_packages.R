@@ -1,4 +1,5 @@
 packages <- c(
+    "RSQLite",
     "caTools",
     "dplyr",
     "ggplot2",
@@ -10,9 +11,11 @@ packages <- c(
     "memoise",
     "nycflights13",
     "parallel",
+    "pixmap",
     "png",
     "readr",
     "rvest",
+    "shiny",
     "sqldf",
     "stringr",
     "swirl",

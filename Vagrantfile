@@ -51,7 +51,7 @@ chown -R vagrant:vagrant /home/vagrant/anaconda
 /home/vagrant/anaconda/bin/pip install seaborn
 
 # Start ipython notebook
-su vagrant -c '/home/vagrant/anaconda/bin/jupyter notebook --generate-config'
+su vagrant -c '/home/vagrant/anaconda/bin/jupyter-notebook --generate-config'
 cat >> /home/vagrant/.jupyter/jupyter_notebook_config.py << END
 c.NotebookApp.ip = '*'
 #c.NotebookApp.port = 8888

@@ -10,16 +10,28 @@ and
 
 [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
+To improve reliability, you will also want to download the latest 64-bit version of Anaconda-3, rstudio server, and spark.
 
-Then run in current directory (where there is your Vagrantfile)
+Rstudio: https://www.rstudio.com/products/rstudio/download-server/ (look for the web address under 64 bit for the latest version)
+Anaconda-3: https://www.continuum.io/downloads#linux (64-bit)
+Spark: http://spark.apache.org/downloads.html
+
+Put all of these installers and the install_r_packages.R and jupyter-notebook.conf
+into the single directory that you've cloned this from.  
+Then change the variable SPARK, ANACONDA and RSTUDIO to the updated file names inside ```bootstrap.sh```.
+
+Then run in the current directory (where there is your Vagrantfile and the installers)
 
 ```
-vagrant init
+vagrant up
 vagrant ssh
 ```
 
-It creates the VM. The process can take around 20 minutes.
+Running $vagrant up should install Ubuntu 14.04 'trusty64' with Spark, Anaconda, and R.
+If any parts fail, especially lines 28-29, just run them in the command line after to
+fix the problem
 
+It creates the VM. The process can take around 20 minutes.
 
 Once the VM is created, you can access is through VirtualBox or easily
 with vagrant.
@@ -34,9 +46,10 @@ with vagrant.
 
 ## On start-up
 
-The VM also launches jupyter notebook. You can access it from the host with:
+The VM also launches jupyter notebook and Rstudio. You can access it from the host with:
 
-http://localhost:2200
+Jupyter: http://localhost:2200
+RStudio: http://localhost:8787
 
 Password is ```vagrant```
 
@@ -51,5 +64,3 @@ host.
 
 Note: the file ```install_r_packages.R``` is not used anymore since R
 is installed with conda.
-
-

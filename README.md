@@ -12,8 +12,10 @@ and
 
 To improve reliability, you will also want to download the latest 64-bit version of Anaconda-3, rstudio server, and spark.
 
-Rstudio: https://www.rstudio.com/products/rstudio/download-server/ (look for the web address under 64 bit for the latest version)
+Rstudio: https://www.rstudio.com/products/rstudio/download-server/ (look for the web address under 64 bit for the latest version).
+
 Anaconda-3: https://www.continuum.io/downloads#linux (64-bit)
+
 Spark: http://spark.apache.org/downloads.html
 
 Put all of these installers and the install_r_packages.R and jupyter-notebook.conf

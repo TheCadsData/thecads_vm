@@ -33,7 +33,7 @@ Running $vagrant up should install Ubuntu 14.04 'trusty64' with Spark, Anaconda,
 If any parts fail, especially lines 28-29, just run them in the command line after to
 fix the problem
 
-It creates the VM. The process can take around 20 minutes.
+It creates the VM. The process can take around 30 minutes.
 
 Once the VM is created, you can access is through VirtualBox or easily
 with vagrant.
@@ -42,7 +42,7 @@ with vagrant.
 
 - Ubuntu 64
 - conda (Python3.5)
-- R (with conda)
+- R (from cran with apt)
 - R studio server
 - Spark
 
@@ -52,6 +52,7 @@ The VM also launches jupyter notebook and Rstudio. You can access it from the ho
 
 Jupyter: http://localhost:2200
 RStudio: http://localhost:8787
+Spark: http://localhost:4040/
 
 Password is ```vagrant```
 
@@ -62,7 +63,3 @@ On the guest, there a link ```/media/thecads -> /home/vagrant/thecads/```.
 
 On the guest, jupyter home folder is ```/media/thecads/```. Thus it is synchronised with ```./thecads/``` on the
 host.
-
-
-Note: the file ```install_r_packages.R``` is not used anymore since R
-is installed with conda.

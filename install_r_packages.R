@@ -19,7 +19,12 @@ packages <- c(
     "sqldf",
     "stringr",
     "swirl",
-    "tidyr"
+    "tidyr",
+    "repr",
+    "IRdisplay",
+    "crayon",
+    "pbdZMQ",
+    "devtools"
 )
 
 for (p in packages) {

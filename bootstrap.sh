@@ -2,48 +2,58 @@
 set -e
 
 #VARIABLES
-SPARK=spark-2.1.0-bin-hadoop2.7.tgz
+SPARK=spark-2.1.0-bin-hadoop2.7
+SPARK_FILE=${SPARK}.tgz
 ANACONDA_PATH=/home/vagrant/anaconda3
 ANACONDA=Anaconda3-4.2.0-Linux-x86_64.sh
 RSTUDIO=rstudio-server-1.0.136-amd64.deb
 
 # Set timezone
 echo "Asia/Kuala_Lumpur" | sudo tee /etc/timezone
-
 export DEBIAN_FRONTEND=noninteractive
+
+sudo dpkg-reconfigure -f noninteractive tzdata
+#sudo update-grub
 
 export LANGUAGE=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-locale-gen en_US.UTF-8
-sudo dpkg-reconfigure locales
+sudo -E locale-gen "en_US.UTF-8"
+#sudo -E apt-get install language-pack-UTF-8
+sudo -E dpkg-reconfigure locales
+
+# directories
+mkdir -p /home/vagrant/thecads/eds
+if [[ ! -e /media/thecads ]]; then
+    sudo ln -s /home/vagrant/thecads /media/thecads
+fi
+sudo chown -R vagrant /media
+sudo chown -R vagrant /home/vagrant/thecads
 
 
-# # R and RStudio Server keys
-# echo "deb https://cran.rstudio.com/bin/linux/ubuntu trusty/" | sudo tee /etc/apt/sources.list.d/r-project.list
-# sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
-# sudo add-apt-repository -y ppa:marutter/rdev
+# R and RStudio Server keys
+echo "deb https://cran.rstudio.com/bin/linux/ubuntu trusty/" | sudo tee /etc/apt/sources.list.d/r-project.list
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+sudo add-apt-repository -y ppa:marutter/rdev
 
 # APT-GET
 sudo apt-get update
 sudo apt-get -y upgrade
 
 sudo apt-get -y install libssl-dev build-essential libffi-dev libzmq-dev libcurl4-gnutls-dev libxml2-dev \
- git-core sqlite3 
+     git-core sqlite3  r-base r-base-dev
+
 # python-dev python-pip sqlite3 r-base r-base-dev
 sudo apt-get -y autoremove
-
+  
 
 # ANACONDA
-if [[ -f /home/vagrant/thecads/$ANACONDA ]]; then
-   cp /home/vagrant/thecads/$ANACONDA .
+if [[ ! -f ~vagrant/thecads/$ANACONDA ]]; then
+   wget -nv https://repo.continuum.io/archive/$ANACONDA -O ~vagrant/thecads/$ANACONDA
 fi
-if [[ ! -f $ANACONDA ]]; then
-   wget -nv https://repo.continuum.io/archive/$ANACONDA -O ~vagrant/$ANACONDA
-fi
-chmod +x $ANACONDA
+chmod +x ~vagrant/thecads/$ANACONDA
 if [[ ! -f $ANACONDA_PATH/bin/conda ]]; then
-   ./$ANACONDA -b -p $ANACONDA_PATH
+   ~vagrant/thecads/$ANACONDA -b -p $ANACONDA_PATH
 fi
 cat >> /home/vagrant/.bashrc << END
 export PATH="$ANACONDA_PATH/bin:$PATH"
@@ -51,31 +61,41 @@ END
 source /home/vagrant/.bashrc
 export PATH="$ANACONDA_PATH/bin:$PATH"
 chown -R vagrant:vagrant $ANACONDA_PATH
-
 conda update -y conda
 
-# R with conda
-conda install -c r r-essentials -y
+# # R with conda
+# conda install -c r r-essentials -y
+
+
 # Rstudio
-#cp /home/vagrant/thecads/install_r_packages.R .
-#sudo Rscript install_r_packages.R
+cp /home/vagrant/thecads/install_r_packages.R .
+sudo Rscript install_r_packages.R
 # R Packages and Studio
-if [[ ! -f $RSTUDIO ]]; then
-   wget -nv https://download2.rstudio.org/$RSTUDIO
+if [[ ! -f ~vagrant/thecads/$RSTUDIO ]]; then
+   wget -nv https://download2.rstudio.org/$RSTUDIO -O ~vagrant/thecads/$RSTUDIO
 fi
 
-sudo dpkg -i $RSTUDIO
+sudo -E dpkg -i ~vagrant/thecads/$RSTUDIO
+#sudo cp thecads/rserver.conf /etc/rstudio/
+
+# IRKernel
+sudo R -e "devtools::install_github('IRkernel/IRkernel')"
 
 
 # JAVA
 sudo apt-get -y install openjdk-7-jdk
 
+
 # APACHE SPARK
-if [[ ! -f ${SPARK} ]]; then
-	wget --quiet http://d3kbcqa49mib13.cloudfront.net/${SPARK}
+if [[ ! -f ~vagrant/thecads/${SPARK_FILE} ]]; then
+	wget -nv http://d3kbcqa49mib13.cloudfront.net/${SPARK_FILE} -O ~vagrant/thecads/${SPARK_FILE}
 fi
-tar xvf $SPARK
-mv $SPARK spark
+tar xvf ~vagrant/thecads/${SPARK_FILE} -C ~vagrant/
+mv ~vagrant/$SPARK spark
+
+cat >> /home/vagrant/.bashrc << END
+export 'SPARK_HOME=/home/vagrant/spark'
+END
 
 pip install --upgrade pip
 
@@ -96,12 +116,11 @@ c.NotebookApp.password = 'sha1:3364ac55916f:432094c0ee211c8c0e1681068c89ecd2ed23
 c.NotebookApp.password_required = False
 END
 
-sudo ln -s /home/vagrant/thecads /media/thecads
-sudo chown -R vagrant /media
-sudo chown -R vagrant /home/vagrant/thecads
 
 sudo cp /home/vagrant/thecads/jupyter-notebook.conf /etc/init
 sudo service jupyter-notebook start
+
+R -e "IRkernel::installspec()"
 
 sudo apt-get -y autoremove
 

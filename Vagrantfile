@@ -7,11 +7,11 @@
 # Put all of these installers and the install_r_packages.R and jupyter-notebook.conf
 # into a single directory.  Make sure to run $ vagrant up  in that directory.
 # Make sure to change variable SPARK, ANACONDA and RSTUDIO to the updated file names.
-# If any parts fail, especially lines 28-29, just run them in the command line after to
-# fix the problem
+# If any parts fail, just run them in the command line after to fix the problem
 
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
+  ENV['LC_ALL']="en_US.UTF-8"
 	#ipython notebook
   config.vm.network "forwarded_port", guest: 8888, host: 2200, auto_correct: true
   #spark

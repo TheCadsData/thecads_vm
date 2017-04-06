@@ -5,7 +5,7 @@ set -e
 SPARK=spark-2.1.0-bin-hadoop2.7
 SPARK_FILE=${SPARK}.tgz
 ANACONDA_PATH=/home/vagrant/anaconda3
-ANACONDA=Anaconda3-4.2.0-Linux-x86_64.sh
+ANACONDA=Anaconda3-4.3.1-Linux-x86_64.sh
 RSTUDIO=rstudio-server-1.0.136-amd64.deb
 
 # Set timezone
@@ -45,7 +45,7 @@ sudo apt-get -y install libssl-dev build-essential libffi-dev libzmq-dev libcurl
 
 # python-dev python-pip sqlite3 r-base r-base-dev
 sudo apt-get -y autoremove
-  
+
 
 # ANACONDA
 if [[ ! -f ~vagrant/thecads/$ANACONDA ]]; then
@@ -116,6 +116,15 @@ c.NotebookApp.password = 'sha1:3364ac55916f:432094c0ee211c8c0e1681068c89ecd2ed23
 c.NotebookApp.password_required = False
 END
 
+# Add Scala kernel to jupyter
+git clone https://github.com/alexarchambault/jupyter-scala.git
+cd jupyter-scala/
+curl -L -o coursier https://git.io/vgvpD && chmod +x coursier && ./coursier --help
+chmod +x jupyter-scala
+export PATH=$PATH:$PWD
+./jupyter-scala
+cd ..
+rm -rf jupyter-scala
 
 sudo cp /home/vagrant/thecads/jupyter-notebook.conf /etc/init
 sudo service jupyter-notebook start

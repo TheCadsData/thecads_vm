@@ -1,42 +1,48 @@
 # TheCADS virtual machine
 
+For courses at theCADS, we use a virtual machine.
+
+One reason we do so is so that we can standardize the operating system across all participants, allowing us to debug problems more effectively.
+
+The second reason is that code can damage or corrupt your normal operating system. Using a VM puts a box around the programs you create, isolating it and preventing it from touching and damaging the operating system you use most often. For those of you who are using company computers and do not have admin privileges, this also allows you to configure your programming environment as you like or require.
+
+Please follow the steps below to install our programming environment on your computer.
+
 ## To create the virtual machine
 
-To create this virtual machine you need
+To create this virtual machine you first need to download and install the following:
 
-[Vagrant](https://www.vagrantup.com/downloads.html)
+* [Vagrant](https://www.vagrantup.com/downloads.html)
 
-and
+* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
-[VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+NB: Some Windows computers require that you enable virtualization in your BIOS. How you enable this depends on the your laptop, but a good initial guide can be found [here.](http://helpdeskgeek.com/how-to/enable-virtualization-in-the-bios/)
 
-To improve reliability, you will also want to download the latest 64-bit version of Anaconda-3, rstudio server, and spark.
+When you have installed these, you will want to download or clone this repository to *somewhere convenient* on your computer - this will be where you will store all the files for the class.  You can do so using the green 'Clone or download' button in the top right corner of this page.
 
-Rstudio: https://www.rstudio.com/products/rstudio/download-server/ (look for the web address under 64 bit for the latest version).
+You will also want to download the latest 64-bit **_Linux_** versions of Anaconda-3, rstudio server, and spark, which can be found at the links below:
 
-Anaconda-3: https://www.continuum.io/downloads#linux (64-bit)
+* [Rstudio, a graphical user interface (GUI) for R programming](https://www.rstudio.com/products/rstudio/download-server/).  
+Look for the web address under 64 bit for the latest version).
 
-Spark: http://spark.apache.org/downloads.html
+* [Anaconda-3, a data science platform based on Python](https://www.continuum.io/downloads#linux) (Python 3)
 
-Put all of these installers and the install_r_packages.R and jupyter-notebook.conf
-into the single directory that you've cloned this from.  
-Then change the variable SPARK, ANACONDA and RSTUDIO to the updated file names inside ```bootstrap.sh```.
+* [Spark, an engine for large scale data processing](http://spark.apache.org/downloads.html)
 
-Then run in the current directory (where there is your Vagrantfile and the installers)
+Put all of these installers into thecads_vm folder on your computer that you cloned or downloaded.
 
+Open ```bootstrap.sh``` in a text editor, and double check whether the filenames in the variables SPARK, ANACONDA and RSTUDIO match the installers you have just downloaded.
+
+Then open your command line (OSX) or command prompt (Windows) and change directories such that your current directory is thecads_vm using the command ```cd```. ([OSX/Linux Tutorial](http://www.ee.surrey.ac.uk/Teaching/Unix/unix1.html), [Windows Tutorial](http://www.digitalcitizen.life/command-prompt-how-use-basic-commands))
+
+Then run the following code:
 ```
-vagrant up
-vagrant ssh
+vagrant up  
 ```
 
-Running $vagrant up should install Ubuntu 14.04 'trusty64' with Spark, Anaconda, and R.
-If any parts fail, especially lines 28-29, just run them in the command line after to
-fix the problem
+Running $vagrant up should install a Virtual Machine (VM) using an Ubuntu 14.04 'trusty64' operating system, with Spark, Scala, Anaconda, and RStudio installed. The process can take around 30 minutes.
 
-It creates the VM. The process can take around 30 minutes.
-
-Once the VM is created, you can access is through VirtualBox or easily
-with vagrant.
+Once the VM is created, it will be running, and you can access the VM through VirtualBox or easily with vagrant by running ```vagrant ssh``` on the command line on the same folder. The user name and password are both the same and is ```vagrant```.
 
 ## What is in the VM
 
@@ -48,18 +54,12 @@ with vagrant.
 
 ## On start-up
 
-The VM also launches jupyter notebook and Rstudio. You can access it from the host with:
+Running ```vagrant ssh``` will launch jupyter notebook and Rstudio. You can access these from your host computer (on your browser) with the following links:
 
 Jupyter: http://localhost:2200
 RStudio: http://localhost:8787
-Spark: http://localhost:4040/
 
-Password is ```vagrant```
+To shut down your VM, which you will want to do when you are done, you can type ```vagrant halt``` into your command line.  To start up your VM again, you can either navigate to the folder and type ```vagrant up``` again, or you can open VirtualBox and open the VM there.
 
 The folder on the host ```./``` is synchronised with folder
-```/home/vagrant/thecads``` on the guest.
-
-On the guest, there a link ```/media/thecads -> /home/vagrant/thecads/```.
-
-On the guest, jupyter home folder is ```/media/thecads/```. Thus it is synchronised with ```./thecads/``` on the
-host.
+```/home/vagrant/thecads``` on the guest (the VM).

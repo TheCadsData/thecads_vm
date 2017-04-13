@@ -13,11 +13,11 @@ Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
   ENV['LC_ALL']="en_US.UTF-8"
 	#ipython notebook
-  config.vm.network "forwarded_port", guest: 8888, host: 2200, host_ip="localhost", auto_correct: true
+  config.vm.network "forwarded_port", guest: 8888, host: 2200, host_ip:"localhost", auto_correct: true
   #spark
-  config.vm.network "forwarded_port", guest: 4040, host: 4040, host_ip="localhost", auto_correct: true
+  config.vm.network "forwarded_port", guest: 4040, host: 4040, host_ip:"localhost", auto_correct: true
 	# rstudio server
-  config.vm.network "forwarded_port", guest: 8787, host: 8787, host_ip="localhost", auto_correct: true
+  config.vm.network "forwarded_port", guest: 8787, host: 8787, host_ip:"localhost", auto_correct: true
 
   config.vm.provider :virtualbox do |v|
   	v.memory = 2048

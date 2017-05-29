@@ -53,7 +53,7 @@ if [[ ! -f ~vagrant/thecads/$ANACONDA ]]; then
 fi
 chmod +x ~vagrant/thecads/$ANACONDA
 if [[ ! -f $ANACONDA_PATH/bin/conda ]]; then
-   ~vagrant/thecads/$ANACONDA -b -p $ANACONDA_PATH
+   ~vagrant/thecads/$ANACONDA -b -f -p $ANACONDA_PATH
 fi
 cat >> /home/vagrant/.bashrc << END
 export PATH="$ANACONDA_PATH/bin:$PATH"
@@ -68,7 +68,9 @@ conda update -y conda
 
 
 # Rstudio
-cp /home/vagrant/thecads/install_r_packages.R .
+if [[ ! -f ./install_r_packages.R ]]; then
+    cp /home/vagrant/thecads/install_r_packages.R .
+fi
 sudo Rscript install_r_packages.R
 # R Packages and Studio
 if [[ ! -f ~vagrant/thecads/$RSTUDIO ]]; then

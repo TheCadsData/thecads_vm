@@ -63,3 +63,50 @@ To shut down your VM, which you will want to do when you are done, you can type 
 
 The folder on the host ```./``` is synchronised with folder
 ```/home/vagrant/thecads``` on the guest (the VM).
+
+## Troubleshouting
+
+To connect directly on the VM with ssh without VirtualBox interface, you can run:
+
+```
+vagrant ssh
+```
+
+For this command, you need ```ssh``` on the computer, otherwise on Windows, you might get the following error:
+
+```
+`ssh` executable not found in any directories in the %PATH% variable.
+Is an SSH client installed? Try installing Cygwin, MinGW or Git,
+all of witch contain an SSH client. Or use your favorite SSH
+client with the following authentication information shown below:
+```
+
+A solution to this problem is to install ssh with git:
+
+https://git-scm.com/download/win
+
+Then you need to specify where ssh executable is. For that, you will have to update the PATH environment variable.
+You first have to figure out where ssh is. Usually, it is in this directory:
+```
+C:\Program Files\Git\usr\bin
+```
+
+Then you can update path, with a command in the command line interface or using the *Control panel*.
+
+The command is:
+
+
+```
+set PATH=%PATH%;C:\Program Files\Git\usr\bin
+```
+
+With the Control Panel, follow this procedure:
+
+1.    Open the Control Panel
+1.    Go to System and Security
+1.    Click on System, then on the Change Settings button
+1.    Display the Advanced tab and click on Environment Variables...
+1.    Look for the Path variable in the System variables list, select it then Edit...
+1. At the end of the string, add the path to Git's bin (something like "C:\Program Files\Git\usr\bin") (don't forget to add a semicolon first to separate it from the previous path).
+
+All this information was found here:  http://tech.osteel.me/posts/2015/01/25/how-to-use-vagrant-on-windows.html

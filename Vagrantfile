@@ -16,6 +16,8 @@ Vagrant.configure(2) do |config|
   config.vm.network "forwarded_port", guest: 8888, host: 2200, host_ip:"localhost", auto_correct: true
   #spark
   config.vm.network "forwarded_port", guest: 4040, host: 4040, host_ip:"localhost", auto_correct: true
+  #Flask
+  config.vm.network "forwarded_port", guest: 5000, host: 5000, host_ip:"localhost", auto_correct: true
 	# rstudio server
   config.vm.network "forwarded_port", guest: 8787, host: 8787, host_ip:"localhost", auto_correct: true
 

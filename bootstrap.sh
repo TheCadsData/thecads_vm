@@ -103,6 +103,8 @@ pip install --upgrade pip
 
 # Install findspark & seaborn
 pip install findspark seaborn
+# Install pyspark
+pip install pyspark
 
 sudo su -c "echo 'SPARK_HOME=/home/vagrant/spark' >> /etc/environment"
 sudo su -c "echo 'PYSPARK_PYTHON='${ANACONDA_PATH}'/bin/python' >> /etc/environment"
